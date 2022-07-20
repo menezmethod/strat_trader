@@ -1,21 +1,23 @@
 version: '3'
 services:
-  app:
+  strat_trader:
     build: .
     ports:
       - "8080:8080"
     volumes:
-      - .:/app
+      - .:/strat_trader
     depends_on:
       - postgres
 
   postgres:
     image: postgres
     volumes:
-      - ./sql/schema.sql:/docker-entrypoint-initdb.d/1-ddl.sql
+      - ./database/migration/000001_init_schema.up.sql:/docker-entrypoint-initdb.d/1-ddl.sql
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=secret
+      - POSTGRES_PASSWORD=strat999
+    ports:
+      - "5432:5432"
 
   prometheus:
     image: prom/prometheus
